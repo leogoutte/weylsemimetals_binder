@@ -1,6 +1,5 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import scipy.sparse.linalg as ssl
 
 def Pauli(idx):
     """
@@ -50,10 +49,10 @@ def BulkSpectrumWidget(kx,ky,g):
     # plot it
     fig, ax = plt.subplots()
     
-    ax.scatter(kzs_plot,Es,marker='.',c='k')
+    ax.scatter(kzs_plot,Es,marker='.',c='gray')
     ax.axhline(y=0,c='k',ls='--')
-    ax.axvline(x=-np.arccos(g),c='r')
-    ax.axvline(x=np.arccos(g),c='r')
+    ax.scatter(x=-np.arccos(g),y=0,c='r',marker='o',s=100)
+    ax.scatter(x=np.arccos(g),y=0,c='r',marker='o',s=100)
     ax.set_ylim(-1.5,1.5)
     ax.set_xlim(-np.pi,np.pi)
     ax.set_ylabel(r"$k_z$")
@@ -204,7 +203,7 @@ def SpectrumFiniteY(size,res,kfix,g,k_dir=3):
             H = WeylHamiltonian(size,kx=kfix,kz=k,g=g)
         else: 
             H = WeylHamiltonian(size,kx=k,kz=kfix,g=g)
-        E, wave = ssl.eigsh(H, k=Hdim, return_eigenvectors=True)
+        E, wave = np.linalg.eigh(H)
         ypos = Position(wave,size=size)
         Es[Hdim*i:Hdim*(i+1)] = E
         Ypos[Hdim*i:Hdim*(i+1)] = ypos
